@@ -1,12 +1,13 @@
 '''
 This is a simple program to calculate your GPA.
 '''
+GPV = {'A' : 4.0,'B+' : 3.5,'B' : 3.0,'C+' : 2.5,'C' : 2.0,'D' : 1.0,'F' : 0.0}
 courses = []
 grades = []
-qPoints = []
-courseCredit = {}
-GPV = {'A' : 4.0,'B+' : 3.5,'B' : 3.0,'C+' : 2.5,'C' : 2.0,'D' : 1.0,'F' : 0.0}
-    
+courseHistory = {}
+totalCreditHours = 0
+qualityPoints = 0
+
 
 
 def GPValue():
@@ -35,26 +36,38 @@ def coursesTaken():
             courses.append(className)
 
 def addCredits():
-	for course in courses:
-		while True:
-			try:
-				credits = int(input('How many credits was '+course+' worth? '))
-				if course not in courseCredit:
-					courseCredit[course] = credits
-					break
-				elif course in courseCredit:
-					print('Course already added, with a grade of: '+str(credits[courseCredit]))
-					break
-			except ValueError:
-				print('Courses are only worth whole credits and must be written as a digit.')
+    for course in courses:
+        while True:
+            try:
+                credit = int(input('How many credits was '+course+' worth? '))
+                if course not in courseHistory:
+                    courseHistory[course] = credit
+                    break
+                elif course in courseHistory:
+                    print('Course already added, with a value of: '+str(credit[courseHistory]))
+                    break
+            except ValueError:
+                print('Courses are only worth whole credits and must be written as a digit.')
+
 def qualityPoints():
-    for course in courseCredit:
+    for course in courseHistory:
         finalGrade = input('What letter grade did you earn for your final grade in '+course+'? ')
         finalGrade = finalGrade.upper()
         while True:
             if finalGrade in GPV:
-                qPoints.append(GPV[finalGrade])
+                qPts = GPV[finalGrade] * courseHistory[course]
+                courseHistory[course] = [finalGrade, str(qPts)]
                 print('Grade added.')
+                break
             else:
                 print('Grade cannot be added. Please try again, using the following as a format: ')
                 for grade in GPV:
+                    print(grade +' : '+str(GPV[grade]), end = '\n')
+
+
+GPValue()
+coursesTaken()
+addCredits()
+qualityPoints()
+#add bio
+#add file
